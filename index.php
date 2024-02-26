@@ -9,8 +9,17 @@
 </head>
 
 <body>
+
     <div class="container">
         <h1 class="mt-5 mb-4">Lista degli Hotel</h1>
+
+        <form class="mb-4">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="parkingFilter" name="parking" value="1">
+                <label class="form-check-label" for="parkingFilter">Filtra per Parcheggio</label>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Filtra</button>
+        </form>
 
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
             <?php
@@ -52,7 +61,14 @@
                 ],
             ];
 
-            foreach ($hotels as $hotel) {
+            $filteredHotels = $hotels;
+            if (isset($_GET['parking']) && $_GET['parking'] == '1') {
+                $filteredHotels = array_filter($hotels, function ($hotel) {
+                    return $hotel['parking'] == true;
+                });
+            }
+
+            foreach ($filteredHotels as $hotel) {
             ?>
                 <div class="col">
                     <div class="card">
